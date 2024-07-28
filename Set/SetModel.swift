@@ -15,12 +15,15 @@ struct SetModel {
         createDeck()
         shuffle()
     }
+    
     mutating private func createDeck() {
+        var id = 0
         for shape in ShapeType.allCases {
             for colour in CardColor.allCases {
                 for shade in Shade.allCases {
                     for num in ShapeNumber.allCases {
-                        cards.append(Card(shape: shape, color: colour, shade: shade, numOfShapes: num))
+                        cards.append(Card(shape: shape, color: colour, shade: shade, numOfShapes: num, id: id))
+                        id += 1
                     }
                 }
             }
@@ -31,17 +34,24 @@ struct SetModel {
     mutating func shuffle() {
         cards.shuffle()
     }
-    func choose(_card: Card) {
+    func choose(_ card: Card) {
         
     }
     
-    struct Card {
+    struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
+        
         var isSelected = false
         var isMatched = false
         var shape: ShapeType
         var color: CardColor
         var shade: Shade
         var numOfShapes: ShapeNumber
+        
+        var id: Int
+        
+        var debugDescription: String {
+            "\(id)"
+        }
     }
 }
 
