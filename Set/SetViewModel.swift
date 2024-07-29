@@ -9,32 +9,36 @@ import SwiftUI
 
 class SetViewModel: ObservableObject {
     @Published private var model: SetModel
-    @Published var cardsInPlay: Array<SetModel.Card>
-    var nextCardIndex: Int
+    @Published var nextCardIndex: Int
     init() {
-        let localModel = SetModel()
-        let localCardsInPlay = Array(localModel.cards[0..<12])
-        model = localModel
-        cardsInPlay = localCardsInPlay
+        model = SetModel()
         nextCardIndex = 12
     }
     var cards: Array<SetModel.Card> {
-        return cardsInPlay
+        return Array(model.cards[0..<nextCardIndex])
     }
+    
+    func getCardColor(_ card: SetModel.Card) -> Color {
+        switch (card.color) {
+        case CardColor.color1:
+            return Color.indigo
+        case CardColor.color2:
+            return Color.purple
+        case CardColor.color3:
+            return Color.green
+        }
+    }
+    
     func choose(_ card: SetModel.Card) {
         model.choose(card)
     }
     func dealThreeCards() {
         if nextCardIndex+2 < 81 {
-            for _ in 0..<3 {
-                cardsInPlay.append(model.cards[nextCardIndex])
-                nextCardIndex += 1
-            }
+            nextCardIndex += 3
         }
     }
     func newGame() {
         model = SetModel()
-        cardsInPlay = Array(model.cards[0..<12])
         nextCardIndex = 12
     }
 }

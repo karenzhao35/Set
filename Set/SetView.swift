@@ -14,8 +14,6 @@ struct SetView: View {
             cards
             Button("Deal 3 more cards") {
                 viewModel.dealThreeCards()
-                print(viewModel.cards)
-                print(viewModel.cards.count)
             }
             Button("New Game") {
                 viewModel.newGame()
@@ -24,22 +22,27 @@ struct SetView: View {
     }
     
     private var cards: some View {
-        AspectVGrid(viewModel.cards, aspectRatio: 2/3) { card in
-            CardView(card)
+        AspectVGrid(viewModel.cards, aspectRatio: 5/9) { card in
+            CardView(card, viewModel)
                 .padding(4)
                 .onTapGesture {
-                    
+                    viewModel.choose(card)
                 }
+                .foregroundStyle(card.isSelected ? Color.black : Color.gray)
+
         }
-        .foregroundColor(Color.blue)
     }
+    
+    
 }
 
 struct CardView: View {
     var card: SetModel.Card
+    @ObservedObject var viewModel: SetViewModel
     
-    init(_ card: SetModel.Card) {
+    init(_ card: SetModel.Card, _ viewModel: SetViewModel) {
         self.card = card
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -47,11 +50,13 @@ struct CardView: View {
             let base = RoundedRectangle(cornerRadius: 12)
             Group {
                 base.fill(.white)
-                base.strokeBorder(lineWidth: 2)
+                base.strokeBorder(lineWidth: 2.5)
                 Text("\(card.id)")
                     .font(.system(size:200))
                     .minimumScaleFactor(0.01)
                     .aspectRatio(1, contentMode: .fit)
+                    .foregroundStyle(viewModel.getCardColor(card))
+                    
             }
             
         }
