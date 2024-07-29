@@ -11,26 +11,45 @@ struct SetView: View {
     @ObservedObject var viewModel: SetViewModel
     var body: some View {
         VStack {
-            cards
+            Text("Make a set!").font(.largeTitle)
+            if (viewModel.cards.count <= 18) {
+                shrinkView
+            } else {
+                scrollView
+            }
             Button("Deal 3 more cards") {
                 viewModel.dealThreeCards()
-            }
+            }.disabled(viewModel.disableDealButton)
             Button("New Game") {
                 viewModel.newGame()
             }
         }
     }
     
-    private var cards: some View {
+    private var shrinkView: some View {
         AspectVGrid(viewModel.cards, aspectRatio: 5/9) { card in
-            CardView(card, viewModel)
-                .padding(4)
-                .onTapGesture {
-                    viewModel.choose(card)
-                }
-                .foregroundStyle(card.isSelected ? Color.black : Color.gray)
-
+            makeCard(card)
         }
+    }
+    
+    private var scrollView: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 77), spacing: 0)], spacing: 0) {
+                ForEach(viewModel.cards) { card in
+                    makeCard(card).aspectRatio(2/3, contentMode: .fit)
+                }
+            }
+        }
+    }
+    
+    
+    private func makeCard(_ card: SetModel.Card) -> some View {
+        CardView(card, viewModel)
+            .padding(4)
+            .onTapGesture {
+                viewModel.choose(card)
+            }
+            .foregroundStyle(card.isSelected ? Color.black : Color.gray)
     }
     
     
@@ -56,10 +75,9 @@ struct CardView: View {
                             .minimumScaleFactor(0.01)
                             .aspectRatio(2, contentMode: .fit)
                             .padding(10)
-                           
+                        
                     }
                     
-                                   
                 }
             }
         }

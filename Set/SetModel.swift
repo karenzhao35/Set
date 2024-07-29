@@ -69,9 +69,12 @@ struct SetModel {
         if checkSet(selected) {
             successNotifier = true
             print("success!")
-            for card in selected {
-                cards[card.index].isMatched = true
+            for cardTuple in selected {
+                if let indexToRemove = cards.firstIndex(where: { $0.id == cardTuple.card.id}) {
+                    cards.remove(at: indexToRemove)
+                }
             }
+            
         } else {
             successNotifier = false
         }

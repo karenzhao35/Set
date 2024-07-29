@@ -9,11 +9,14 @@ import SwiftUI
 
 class SetViewModel: ObservableObject {
     @Published private var model: SetModel
-    @Published var nextCardIndex: Int
+    @Published private var nextCardIndex: Int
+    @Published var disableDealButton: Bool
     init() {
         model = SetModel()
         nextCardIndex = 12
+        disableDealButton = false
     }
+    
     var cards: Array<SetModel.Card> {
         return Array(model.cards[0..<nextCardIndex])
     }
@@ -49,11 +52,11 @@ class SetViewModel: ObservableObject {
     func getCardColor(_ card: SetModel.Card) -> Color {
         switch (card.color) {
         case .color1:
-            return .indigo
+            return .yellow
         case .color2:
             return .purple
         case .color3:
-            return .green
+            return .teal
         }
     }
     
@@ -66,6 +69,8 @@ class SetViewModel: ObservableObject {
     func dealThreeCards() {
         if nextCardIndex+2 < 81 {
             nextCardIndex += 3
+        } else {
+            disableDealButton = true
         }
     }
     func newGame() {
