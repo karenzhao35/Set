@@ -39,7 +39,9 @@ struct SetModel {
     mutating func shuffle() {
         cards.shuffle()
     }
+    
     mutating func choose(_ card: Card) {
+        
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if cards[chosenIndex].isSelected {
                 cards[chosenIndex].isSelected = false
@@ -47,26 +49,36 @@ struct SetModel {
                     selected.remove(at: toRemove)
                 }
             } else {
-                if selected.count < 3 {
-                    successNotifier = nil
-                    cards[chosenIndex].isSelected = true
-                    selected.append((card: cards[chosenIndex], index: chosenIndex))
-                } else {
-                    if checkSet(selected) {
-                        successNotifier = true
-                        for c in selected {
-                            cards[c.index].isMatched = true
-                        }
-                    } else {
-                        successNotifier = false
-                    }
-                    for c in selected {
-                        cards[c.index].isSelected = false
-                    }
-                    selected = []
-                }
+                handleCardSelection(chosenIndex)
+                
             }
         }
+    }
+    
+    mutating private func handleCardSelection(_ chosenIndex: Int) {
+        if selected.count < 3 {
+            successNotifier = nil
+            cards[chosenIndex].isSelected = true
+            selected.append((card: cards[chosenIndex], index: chosenIndex))
+        } else {
+            handleSetSelection(chosenIndex)
+        }
+    }
+    
+    mutating private func handleSetSelection(_ chosenIndex: Int) {
+        if checkSet(selected) {
+            successNotifier = true
+            print("success!")
+            for card in selected {
+                cards[card.index].isMatched = true
+            }
+        } else {
+            successNotifier = false
+        }
+        for card in selected {
+            cards[card.index].isSelected = false
+        }
+        selected = []
     }
     
     private func checkSet(_ selectedCards: Array<(card: Card, index: Int)>) -> Bool {
@@ -95,9 +107,8 @@ struct SetModel {
         var numOfShapes: Int
         
         var id: Int
-        
         var debugDescription: String {
-            "\(id): selected: \(isSelected); matched: \(isMatched)"
+            "\(id)"
         }
     }
 }

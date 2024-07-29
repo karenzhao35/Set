@@ -49,16 +49,19 @@ struct CardView: View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
             Group {
-                base.fill(.white)
                 base.strokeBorder(lineWidth: 2.5)
-                Text("\(card.id)")
-                    .font(.system(size:200))
-                    .minimumScaleFactor(0.01)
-                    .aspectRatio(1, contentMode: .fit)
-                    .foregroundStyle(viewModel.getCardColor(card))
+                VStack {
+                    ForEach(0..<viewModel.getNumShapes(card), id: \.self) { index in
+                        viewModel.getShape(card)
+                            .minimumScaleFactor(0.01)
+                            .aspectRatio(2, contentMode: .fit)
+                            .padding(10)
+                           
+                    }
                     
+                                   
+                }
             }
-            
         }
         .opacity(!card.isMatched ? 1 : 0)
     }
