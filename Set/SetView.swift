@@ -74,15 +74,17 @@ struct CardView: View {
     }
     
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 12).strokeBorder(lineWidth: 2.5)
-            VStack {
-                ForEach(0..<viewModel.getNumShapes(card), id: \.self) { _ in
-                    viewModel.getShape(card)
-                        .minimumScaleFactor(0.01)
-                        .aspectRatio(5/3, contentMode: .fit)
-                }
-            }.padding(10)
+        if !card.isMatched {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12).strokeBorder(lineWidth: 2.5)
+                VStack {
+                    ForEach(0..<viewModel.getNumShapes(card), id: \.self) { _ in
+                        viewModel.getShape(card)
+                            .minimumScaleFactor(0.01)
+                            .aspectRatio(5/3, contentMode: .fit)
+                    }
+                }.padding(10)
+            }
         }
     }
 }

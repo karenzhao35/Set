@@ -72,7 +72,6 @@ class SetViewModel: ObservableObject {
     
     // MARK: - Intents
     func dealThreeCards() {
-        print(cards.count)
         if nextCardIndex+2 < model.cards.count {
             nextCardIndex += 3
         } else {

@@ -41,6 +41,10 @@ struct SetModel {
     
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
+            if chosenIndex > cards.count {
+                print("hi")
+                return
+            }
             if !cards[chosenIndex].isSelected || (cards[chosenIndex].isSelected && successNotifier == false) {
                 handleCompleteSelection()
                 handleCardSelection(chosenIndex)
@@ -71,8 +75,8 @@ struct SetModel {
         if selected.count == 3 {
             if successNotifier ?? false {
                 for cardTuple in selected {
-                    if let indexToRemove = cards.firstIndex(where: { $0.id == cardTuple.card.id}) {
-                        cards.remove(at: indexToRemove)
+                    if let matchedCardIndex = cards.firstIndex(where: { $0.id == cardTuple.card.id}) {
+                        cards[matchedCardIndex].isMatched = true
                     }
                 }
             }
@@ -90,7 +94,8 @@ struct SetModel {
             let shade: Set = [selectedCards[0].card.shade, selectedCards[1].card.shade, selectedCards[2].card.shade]
             let numOfShapes: Set = [selectedCards[0].card.numOfShapes, selectedCards[1].card.numOfShapes, selectedCards[2].card.numOfShapes]
             
-            return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
+//            return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
+            return true
             
         } else {
             print("There is an error in the selection of the cards")
@@ -100,7 +105,7 @@ struct SetModel {
     
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-        
+        var isMatched = false
         var isSelected = false
         var shape: ShapeType
         var color: CardColor
