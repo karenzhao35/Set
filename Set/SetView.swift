@@ -13,9 +13,9 @@ struct SetView: View {
         VStack {
             Text("Make a set!").font(.largeTitle)
             if (viewModel.cards.count <= 18) {
-                shrinkView
+                shrinkView.animation(.default, value: viewModel.cards)
             } else {
-                scrollView
+                scrollView.animation(.default, value: viewModel.cards)
             }
             Button("Deal 3 more cards") {
                 viewModel.dealThreeCards()
@@ -29,27 +29,36 @@ struct SetView: View {
     private var shrinkView: some View {
         AspectVGrid(viewModel.cards, aspectRatio: 5/9) { card in
             makeCard(card)
-        }
+        }.padding(10)
     }
     
     private var scrollView: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 77), spacing: 0)], spacing: 0) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 74), spacing: 0)], spacing: 0) {
                 ForEach(viewModel.cards) { card in
-                    makeCard(card).aspectRatio(2/3, contentMode: .fit)
+                    makeCard(card).aspectRatio(5/9, contentMode: .fit)
                 }
             }
-        }
+        }.padding(10)
     }
     
     
     private func makeCard(_ card: SetModel.Card) -> some View {
-        CardView(card, viewModel)
-            .padding(4)
-            .onTapGesture {
-                viewModel.choose(card)
-            }
-            .foregroundStyle(card.isSelected ? Color.black : Color.gray)
+        if let successNotifier = viewModel.successNotifier {
+            CardView(card, viewModel)
+                .padding(4)
+                .onTapGesture {
+                    viewModel.choose(card)
+                }
+                .foregroundStyle(card.isSelected ? successNotifier ? Color.green : Color.red : Color.gray)
+        } else {
+            CardView(card, viewModel)
+                .padding(4)
+                .onTapGesture {
+                    viewModel.choose(card)
+                }
+                .foregroundStyle(card.isSelected ? Color.black : Color.gray)
+        }
     }
     
     
@@ -66,22 +75,15 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
-            let base = RoundedRectangle(cornerRadius: 12)
-            Group {
-                base.strokeBorder(lineWidth: 2.5)
-                VStack {
-                    ForEach(0..<viewModel.getNumShapes(card), id: \.self) { index in
-                        viewModel.getShape(card)
-                            .minimumScaleFactor(0.01)
-                            .aspectRatio(2, contentMode: .fit)
-                            .padding(10)
-                        
-                    }
-                    
+            RoundedRectangle(cornerRadius: 12).strokeBorder(lineWidth: 2.5)
+            VStack {
+                ForEach(0..<viewModel.getNumShapes(card), id: \.self) { _ in
+                    viewModel.getShape(card)
+                        .minimumScaleFactor(0.01)
+                        .aspectRatio(5/3, contentMode: .fit)
                 }
-            }
+            }.padding(10)
         }
-        .opacity(!card.isMatched ? 1 : 0)
     }
 }
 

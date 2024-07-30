@@ -35,53 +35,52 @@ struct SetModel {
         }
     }
     
-    
     mutating func shuffle() {
         cards.shuffle()
     }
     
     mutating func choose(_ card: Card) {
-        
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
-            if cards[chosenIndex].isSelected {
-                cards[chosenIndex].isSelected = false
-                if let toRemove = selected.firstIndex(where: {$0.card.id == card.id}) {
-                    selected.remove(at: toRemove)
-                }
-            } else {
+            if !cards[chosenIndex].isSelected || (cards[chosenIndex].isSelected && successNotifier == false) {
+                handleCompleteSelection()
                 handleCardSelection(chosenIndex)
-                
+            } else if cards[chosenIndex].isSelected && successNotifier != true {
+                handleCardDeselection(chosenIndex, card)
             }
+        }
+    }
+    
+    mutating private func handleCardDeselection(_ chosenIndex: Int, _ card: Card) {
+        cards[chosenIndex].isSelected = false
+        if let toRemove = selected.firstIndex(where: {$0.card.id == card.id}) {
+            selected.remove(at: toRemove)
         }
     }
     
     mutating private func handleCardSelection(_ chosenIndex: Int) {
+        selected.append((card: cards[chosenIndex], index: chosenIndex))
+        cards[chosenIndex].isSelected = true
         if selected.count < 3 {
             successNotifier = nil
-            cards[chosenIndex].isSelected = true
-            selected.append((card: cards[chosenIndex], index: chosenIndex))
         } else {
-            handleSetSelection(chosenIndex)
+            successNotifier = checkSet(selected)
         }
     }
     
-    mutating private func handleSetSelection(_ chosenIndex: Int) {
-        if checkSet(selected) {
-            successNotifier = true
-            print("success!")
-            for cardTuple in selected {
-                if let indexToRemove = cards.firstIndex(where: { $0.id == cardTuple.card.id}) {
-                    cards.remove(at: indexToRemove)
+    mutating private func handleCompleteSelection() {
+        if selected.count == 3 {
+            if successNotifier ?? false {
+                for cardTuple in selected {
+                    if let indexToRemove = cards.firstIndex(where: { $0.id == cardTuple.card.id}) {
+                        cards.remove(at: indexToRemove)
+                    }
                 }
             }
-            
-        } else {
-            successNotifier = false
+            for card in selected {
+                cards[card.index].isSelected = false
+            }
+            selected = []
         }
-        for card in selected {
-            cards[card.index].isSelected = false
-        }
-        selected = []
     }
     
     private func checkSet(_ selectedCards: Array<(card: Card, index: Int)>) -> Bool {
@@ -92,7 +91,7 @@ struct SetModel {
             let numOfShapes: Set = [selectedCards[0].card.numOfShapes, selectedCards[1].card.numOfShapes, selectedCards[2].card.numOfShapes]
             
             return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
-
+            
         } else {
             print("There is an error in the selection of the cards")
             return false
@@ -103,7 +102,6 @@ struct SetModel {
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         
         var isSelected = false
-        var isMatched = false
         var shape: ShapeType
         var color: CardColor
         var shade: Shade

@@ -11,6 +11,7 @@ class SetViewModel: ObservableObject {
     @Published private var model: SetModel
     @Published private var nextCardIndex: Int
     @Published var disableDealButton: Bool
+    
     init() {
         model = SetModel()
         nextCardIndex = 12
@@ -19,6 +20,10 @@ class SetViewModel: ObservableObject {
     
     var cards: Array<SetModel.Card> {
         return Array(model.cards[0..<nextCardIndex])
+    }
+    
+    var successNotifier: Bool? {
+        return model.successNotifier
     }
     
     @ViewBuilder
@@ -67,7 +72,8 @@ class SetViewModel: ObservableObject {
     
     // MARK: - Intents
     func dealThreeCards() {
-        if nextCardIndex+2 < 81 {
+        print(cards.count)
+        if nextCardIndex+2 < model.cards.count {
             nextCardIndex += 3
         } else {
             disableDealButton = true
@@ -76,5 +82,6 @@ class SetViewModel: ObservableObject {
     func newGame() {
         model = SetModel()
         nextCardIndex = 12
+        disableDealButton = false
     }
 }
