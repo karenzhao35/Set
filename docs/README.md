@@ -1,7 +1,5 @@
-# Set Game
-
 ![](../Set/Assets/homepage.png)
-
+# Set Game
 This is a single-player version of the Set game implemented in Swift using the MVVM architecture.
 
 ## Game Rules
