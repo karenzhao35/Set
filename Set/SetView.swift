@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-
+// FIXME: cards not displaying correctly
 struct SetView: View {
     @ObservedObject var viewModel: SetViewModel
+    
     var body: some View {
         VStack {
             Text("Make a set!").font(.largeTitle)
-            if (viewModel.cards.count <= 18) {
+
+            if (viewModel.cards.count - viewModel.cardsRemoved) <= 18 {
                 shrinkView.animation(.default, value: viewModel.cards)
             } else {
                 scrollView.animation(.default, value: viewModel.cards)
@@ -23,18 +25,20 @@ struct SetView: View {
             Button("New Game") {
                 viewModel.newGame()
             }
+//            Diamond()
+//                .stroke(lineWidth: 1)
         }
     }
     
     private var shrinkView: some View {
-        AspectVGrid(viewModel.cards, aspectRatio: 5/9) { card in
+        AspectVGrid(viewModel.cards, itemCount: viewModel.cards.count - viewModel.cardsRemoved, aspectRatio: 5/9) { card in
             makeCard(card)
         }.padding(10)
     }
     
     private var scrollView: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 74), spacing: 0)], spacing: 0) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 65), spacing: 0)], spacing: 0) {
                 ForEach(viewModel.cards) { card in
                     makeCard(card).aspectRatio(5/9, contentMode: .fit)
                 }

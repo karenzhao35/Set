@@ -9,21 +9,26 @@ import SwiftUI
 
 class SetViewModel: ObservableObject {
     @Published private var model: SetModel
-    @Published private var nextCardIndex: Int
     @Published var disableDealButton: Bool
     
+    private var numberOfStartingCards: Int
     init() {
         model = SetModel()
-        nextCardIndex = 12
         disableDealButton = false
+        numberOfStartingCards = 12
     }
     
     var cards: Array<SetModel.Card> {
-        return Array(model.cards[0..<nextCardIndex])
+        return Array(model.cards[0..<model.nextCardIndex])
     }
     
     var successNotifier: Bool? {
         return model.successNotifier
+    }
+    
+    var cardsRemoved: Int {
+        print(model.cardsRemoved)
+        return model.cardsRemoved
     }
     
     @ViewBuilder
@@ -72,15 +77,16 @@ class SetViewModel: ObservableObject {
     
     // MARK: - Intents
     func dealThreeCards() {
-        if nextCardIndex+2 < model.cards.count {
-            nextCardIndex += 3
+        if model.nextCardIndex+2 < model.cards.count {
+            model.nextCardIndex += 3
         } else {
             disableDealButton = true
         }
     }
+    
     func newGame() {
         model = SetModel()
-        nextCardIndex = 12
+        model.nextCardIndex = numberOfStartingCards
         disableDealButton = false
     }
 }

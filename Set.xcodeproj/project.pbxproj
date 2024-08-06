@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61487F452C5C5BCB00D9E574 /* Diamond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61487F442C5C5BCB00D9E574 /* Diamond.swift */; };
 		615F6C702C55BAC200757649 /* SetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615F6C6F2C55BAC200757649 /* SetApp.swift */; };
 		615F6C722C55BAC200757649 /* SetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615F6C712C55BAC200757649 /* SetView.swift */; };
 		615F6C742C55BAC500757649 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 615F6C732C55BAC500757649 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		61487F442C5C5BCB00D9E574 /* Diamond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diamond.swift; sourceTree = "<group>"; };
 		615F6C6C2C55BAC200757649 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		615F6C6F2C55BAC200757649 /* SetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetApp.swift; sourceTree = "<group>"; };
 		615F6C712C55BAC200757649 /* SetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetView.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			children = (
 				615F6C6F2C55BAC200757649 /* SetApp.swift */,
 				615F6C712C55BAC200757649 /* SetView.swift */,
+				61487F442C5C5BCB00D9E574 /* Diamond.swift */,
 				615F6C9E2C56E80C00757649 /* AspectVGrid.swift */,
 				615F6C992C55BE9C00757649 /* SetViewModel.swift */,
 				615F6C9B2C55BEA700757649 /* SetModel.swift */,
@@ -268,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61487F452C5C5BCB00D9E574 /* Diamond.swift in Sources */,
 				615F6C9A2C55BE9C00757649 /* SetViewModel.swift in Sources */,
 				615F6C722C55BAC200757649 /* SetView.swift in Sources */,
 				615F6C9C2C55BEA700757649 /* SetModel.swift in Sources */,

@@ -10,6 +10,8 @@ import Foundation
 struct SetModel {
     private(set) var cards: Array<Card>
     private(set) var successNotifier: Bool?
+    var nextCardIndex: Int
+    var cardsRemoved: Int
     
     private var selected: Array<(card: Card, index: Int)>
     
@@ -17,6 +19,8 @@ struct SetModel {
     init() {
         cards = []
         selected = []
+        cardsRemoved = 0
+        nextCardIndex = 12
         createDeck()
         shuffle()
     }
@@ -42,7 +46,6 @@ struct SetModel {
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if chosenIndex > cards.count {
-                print("hi")
                 return
             }
             if !cards[chosenIndex].isSelected || (cards[chosenIndex].isSelected && successNotifier == false) {
@@ -68,6 +71,9 @@ struct SetModel {
             successNotifier = nil
         } else {
             successNotifier = checkSet(selected)
+//            if successNotifier ?? false && nextCardIndex+2 < cards.count {
+//                nextCardIndex += 3
+//            }
         }
     }
     
@@ -78,6 +84,11 @@ struct SetModel {
                     if let matchedCardIndex = cards.firstIndex(where: { $0.id == cardTuple.card.id}) {
                         cards[matchedCardIndex].isMatched = true
                     }
+
+                }
+                cardsRemoved += 3
+                if nextCardIndex+2 < cards.count {
+                    nextCardIndex += 3
                 }
             }
             for card in selected {
@@ -94,8 +105,8 @@ struct SetModel {
             let shade: Set = [selectedCards[0].card.shade, selectedCards[1].card.shade, selectedCards[2].card.shade]
             let numOfShapes: Set = [selectedCards[0].card.numOfShapes, selectedCards[1].card.numOfShapes, selectedCards[2].card.numOfShapes]
             
-//            return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
-            return true
+            return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
+   
             
         } else {
             print("There is an error in the selection of the cards")

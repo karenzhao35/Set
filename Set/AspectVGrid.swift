@@ -9,12 +9,14 @@ import SwiftUI
 
 struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     var items: [Item]
+    var itemCount: Int
     var aspectRatio: CGFloat = 1
     // If you add this modifier, it will automatically interpret the function as a ViewBuilder
     var content: (Item) -> ItemView
     
-    init(_ items: [Item], aspectRatio: CGFloat, @ViewBuilder content: @escaping (Item) -> ItemView) {
+    init(_ items: [Item], itemCount: Int, aspectRatio: CGFloat, @ViewBuilder content: @escaping (Item) -> ItemView) {
         self.items = items
+        self.itemCount = itemCount
         self.aspectRatio = aspectRatio
         self.content = content
     }
@@ -22,7 +24,7 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     var body: some View {
         GeometryReader { geometry in
             let gridItemSize = gridItemWidthThatFits(
-                count: items.count,
+                count: max(9, itemCount),
                 size: geometry.size,
                 atAspectRation: aspectRatio)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)], spacing: 0) {
