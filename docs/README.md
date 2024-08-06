@@ -1,6 +1,6 @@
 # Set Game
 
-![](Homescreen)
+![](homepage.png)
 
 This is a single-player version of the Set game implemented in Swift using the MVVM architecture.
 
