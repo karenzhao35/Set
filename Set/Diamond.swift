@@ -9,17 +9,13 @@ import SwiftUI
 
 struct Diamond: Shape {
     func path(in rect: CGRect) -> Path {
-        var p = Path()
-        p.move(to: CGPoint(x: rect.midX, y: rect.maxY))
-        p.addLine(to: CGPoint(x: 10, y: 10))
-        
-//        p.move(to: CGPoint(x: 100, y: 50))
-//        p.addLine(to: CGPoint(x: 200, y: 100))
-//
-//        p.move(to: CGPoint(x: 100, y: 100))
-//        p.addLine(to: CGPoint(x: 200, y: 100))
-        
-        return p
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
+        path.closeSubpath()
+        return path
     }
     
     

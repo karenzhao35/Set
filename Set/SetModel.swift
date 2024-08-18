@@ -10,8 +10,8 @@ import Foundation
 struct SetModel {
     private(set) var cards: Array<Card>
     private(set) var successNotifier: Bool?
-    var nextCardIndex: Int
-    var cardsRemoved: Int
+    private(set) var nextCardIndex: Int
+    private(set) var cardsRemoved: Int
     
     private var selected: Array<(card: Card, index: Int)>
     
@@ -46,7 +46,6 @@ struct SetModel {
     // FIXME: refactor choose to be cleaner
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
-            
             if !cards[chosenIndex].isSelected || (cards[chosenIndex].isSelected && successNotifier == false) {
                 if selected.count == 3 {
                     handleCompleteSelection()
@@ -106,9 +105,19 @@ struct SetModel {
             let shade: Set = [selectedCards[0].card.shade, selectedCards[1].card.shade, selectedCards[2].card.shade]
             let numOfShapes: Set = [selectedCards[0].card.numOfShapes, selectedCards[1].card.numOfShapes, selectedCards[2].card.numOfShapes]
             
-            return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
+            //return (color.count == 1 || color.count == 3) && (shape.count == 1 || shape.count == 3) && (shade.count == 1 || shade.count == 3) && (numOfShapes.count == 1 || numOfShapes.count == 3)
+            return true
         } else {
             print("There is an error in the selection of the cards")
+            return false
+        }
+    }
+    
+    mutating func dealThreeCards() -> Bool {
+        if nextCardIndex+2 < cards.count {
+            nextCardIndex += 3
+            return true
+        } else {
             return false
         }
     }
@@ -117,6 +126,7 @@ struct SetModel {
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         var isMatched = false
         var isSelected = false
+        
         var shape: ShapeType
         var color: CardColor
         var shade: Shade

@@ -8,27 +8,41 @@
 import SwiftUI
 
 class SetViewModel: ObservableObject {
-    @Published private var model: SetModel
-    @Published var disableDealButton: Bool
+    typealias Card = SetModel.Card
+    @Published private var game: SetModel
+    @Published private var disableDealButton: Bool
+    @Published private var matched: Set<Card.ID>
     
     private var numberOfStartingCards: Int
     init() {
-        model = SetModel()
+        game = SetModel()
         disableDealButton = false
         numberOfStartingCards = 12
+        matched = Set<Card.ID>()
     }
     
     var cards: Array<SetModel.Card> {
-        return Array(model.cards[0..<model.nextCardIndex])
+        return Array(game.cards[0..<game.nextCardIndex])
     }
     
     var successNotifier: Bool? {
-        return model.successNotifier
+        return game.successNotifier
     }
     
     var cardsRemoved: Int {
-        print(model.cardsRemoved)
-        return model.cardsRemoved
+        return game.cardsRemoved
+    }
+    
+    var nextCardIndex: Int {
+        return game.nextCardIndex
+    }
+    
+    var dealButtonState: Bool {
+        return disableDealButton
+    }
+    
+    var matchedCards: Set<Card.ID> {
+        return matched
     }
     
     @ViewBuilder
@@ -39,21 +53,22 @@ class SetViewModel: ObservableObject {
         case .type2:
             returnCorrectShade(AnyShape(RoundedRectangle(cornerSize: CGSize(width: 30, height: 20))), card)
         case .type3:
-            returnCorrectShade(AnyShape(Circle()), card)
+            returnCorrectShade(Diamond(), card)
         }
     }
     
     @ViewBuilder
-    func returnCorrectShade(_ shape: AnyShape, _ card: SetModel.Card) -> some View {
+    func returnCorrectShade<S: Shape>(_ shape: S, _ card: SetModel.Card) -> some View {
         switch(card.shade) {
         case .shade1:
-            shape.foregroundStyle(getCardColor(card))
+            shape.fill(getCardColor(card))
         case .shade2:
             shape.stroke(getCardColor(card), lineWidth: 3)
         case .shade3:
-            shape.foregroundStyle(getCardColor(card).opacity(0.5))
+            shape.fill(getCardColor(card).opacity(0.5))
         }
     }
+
     
     func getNumShapes(_ card: SetModel.Card) -> Int {
         return card.numOfShapes
@@ -69,24 +84,23 @@ class SetViewModel: ObservableObject {
             return .teal
         }
     }
-    
-    
+
     func choose(_ card: SetModel.Card) {
-        model.choose(card)
+        game.choose(card)
+        matched = Set(game.cards.filter { $0.isMatched }.map { $0.id })
+        print(matched)
     }
     
     // MARK: - Intents
     func dealThreeCards() {
-        if model.nextCardIndex+2 < model.cards.count {
-            model.nextCardIndex += 3
-        } else {
+        if !game.dealThreeCards() {
             disableDealButton = true
         }
     }
     
     func newGame() {
-        model = SetModel()
-        model.nextCardIndex = numberOfStartingCards
+        game = SetModel()
         disableDealButton = false
+        numberOfStartingCards = 12
     }
 }

@@ -18,6 +18,7 @@
 		615F6C9A2C55BE9C00757649 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615F6C992C55BE9C00757649 /* SetViewModel.swift */; };
 		615F6C9C2C55BEA700757649 /* SetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615F6C9B2C55BEA700757649 /* SetModel.swift */; };
 		615F6C9F2C56E80C00757649 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615F6C9E2C56E80C00757649 /* AspectVGrid.swift */; };
+		619AC6D32C65958600F9801D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619AC6D22C65958600F9801D /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		615F6C9E2C56E80C00757649 /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		619AC65F2C62B50C00F9801D /* homepage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = homepage.png; path = ../../../../../../var/folders/9j/pcm9xx9j61gbcynz32_tx1m80000gn/T/TemporaryItems/NSIRD_screencaptureui_PTr5CP/homepage.png; sourceTree = "<group>"; };
 		619AC6632C62B91000F9801D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		619AC6D22C65958600F9801D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 			children = (
 				615F6C6F2C55BAC200757649 /* SetApp.swift */,
 				615F6C712C55BAC200757649 /* SetView.swift */,
+				619AC6D22C65958600F9801D /* CardView.swift */,
 				61487F442C5C5BCB00D9E574 /* Diamond.swift */,
 				615F6C9E2C56E80C00757649 /* AspectVGrid.swift */,
 				615F6C992C55BE9C00757649 /* SetViewModel.swift */,
@@ -281,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				619AC6D32C65958600F9801D /* CardView.swift in Sources */,
 				61487F452C5C5BCB00D9E574 /* Diamond.swift in Sources */,
 				615F6C9A2C55BE9C00757649 /* SetViewModel.swift in Sources */,
 				615F6C722C55BAC200757649 /* SetView.swift in Sources */,
